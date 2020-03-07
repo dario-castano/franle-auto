@@ -1,0 +1,14 @@
+[Unit]
+Description=Franle WebSocket Service.
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+WorkingDirectory=/home/ubuntu/franle_ws
+ExecStart=/usr/bin/npm start
+StandardOutput=file:/var/log/franle_ws/stdout.log
+StandardError=file:/var/log/franle_ws/stderr.log
+
+[Install]
+WantedBy=multi-user.target
