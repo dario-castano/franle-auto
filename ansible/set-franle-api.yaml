@@ -1,0 +1,68 @@
+- hosts: apiserver
+  remote_user: ubuntu
+  become: yes
+  tasks:
+  - name: Install NGINX
+    apt: 
+      name: nginx
+      state: present
+      update_cache: true
+  - name: Install Node.js
+    apt: 
+      name: nodejs
+      state: present
+      update_cache: true
+  - name: Install NPM
+    apt: 
+      name: npm
+      state: present
+      update_cache: true
+  - name: Removing old Node.js repo
+    file:
+      path: /home/ubuntu/API_franle
+      state: absent
+  - name: Getting the last Node.js repo
+    git:
+      repo: https://github.com/SantiagoHerreG/API_franle
+      clone: yes
+      dest: /home/ubuntu/API_franle
+    become_user: ubuntu
+  - name: Install packages based on package.json.
+    npm:
+      path: /home/ubuntu/API_franle
+    become_user: ubuntu
+  - name: Setting systemd unit for the Franle API
+    copy:
+      src: ../api-server/apiserver.service
+      dest: /etc/systemd/system/apiserver.service
+      owner: root
+      group: root
+      mode: '0644'
+      force: yes
+  - name: Set NGINX Reverse proxy configuration
+    copy:
+      src: ../api-server/default
+      dest: /etc/nginx/sites-available/default
+      owner: root
+      group: root
+      mode: '0644'
+      force: yes
+  - name: Create systemd log directory
+    file:
+      path: /var/log/franle_api
+      state: directory
+      mode: '0644'
+  - name: Open API listening port 
+    ufw:
+      rule: allow
+      port: '5000'
+  - name: Enable Franle API service
+    service:
+      name: apiserver
+      state: restarted
+      enabled: yes
+  - name: Enable NGINX service
+    service:
+      name: nginx
+      state: restarted
+      enabled: yes

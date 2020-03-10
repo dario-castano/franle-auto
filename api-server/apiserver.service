@@ -1,0 +1,14 @@
+[Unit]
+Description=Franle API Service.
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+WorkingDirectory=/home/ubuntu/API_franle
+ExecStart=/usr/bin/npm start
+StandardOutput=file:/var/log/franle_api/stdout.log
+StandardError=file:/var/log/franle_api/stderr.log
+
+[Install]
+WantedBy=multi-user.target

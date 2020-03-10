@@ -1,0 +1,18 @@
+- hosts: dbserver
+  remote_user: ubuntu
+  become: yes
+  tasks:
+  - name: Install MongoDB
+    apt: 
+      name: mongodb
+      state: present
+      update_cache: true
+  - name: Open MongoDB port 
+    ufw:
+      rule: allow
+      port: '27017'
+  - name: Enable MongoDB service
+    service:
+      name: mongodb
+      state: restarted
+      enabled: yes
