@@ -44,4 +44,12 @@ server {
     proxy_set_header Host $host;
 	proxy_read_timeout 60s;
 	}
+
+	location = /basic_status {
+	stub_status;
+	allow 127.0.0.1;
+	allow 35.229.53.195;
+	deny all;
+	}
+
 }

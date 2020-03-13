@@ -27,5 +27,12 @@ server {
         proxy_pass         http://0.0.0.0:5000;
 	}
 
+	location = /basic_status {
+	stub_status;
+	allow 127.0.0.1;
+	allow 35.229.53.195;
+	deny all;
+	}
+
 }
 

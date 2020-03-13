@@ -7,6 +7,16 @@
         name: mysql-server
         state: present
         update_cache: true
+    - name: Install NMAP
+      apt: 
+        name: nmap
+        state: present
+        update_cache: true
+    - name: Install Traceroute
+      apt: 
+        name: traceroute
+        state: present
+        update_cache: true
     - name: Install PyMySQL
       apt: 
         name: 
